@@ -1,0 +1,63 @@
+
+name: Daily ETF Prediction Update
+
+on:
+  schedule:
+    - cron: '30 17 * * 1-5'
+      timezone: 'America/New_York'
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  update-and-publish:
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Download ETF data
+        run: python etf_hist_data.py
+
+      - name: Run prediction model
+        run: python var_forecasting.py
+
+      - name: Update website index
+        run: python update_index.py
+
+      - name: Verify website files
+        run: |
+          test -f site/index.html
+          ls -lh site/
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload website
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+
+      - name: Publish website
+        id: deployment
+        uses: actions/deploy-pages@v4
