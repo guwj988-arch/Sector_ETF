@@ -40,7 +40,7 @@ jobs:
         run: python etf_hist_data.py
 
       - name: Run prediction model
-        run: python var_forecasting.py
+        run: python var_forecating.py
 
       - name: Update website index
         run: python update_index.py
