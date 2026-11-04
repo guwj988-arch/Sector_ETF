@@ -250,9 +250,10 @@ fig.update_layout(bargap=0.25)
 
 # ===== Save as standalone HTML =====
 # ===== Save as standalone HTML =====
-output_file = f"sector_predictions_{date.today()}.html"
-pio.write_html(fig, file=output_file, full_html=True, include_plotlyjs="cdn")
-print(f"✅ Interactive chart saved to {output_file}")
+output_file = "site/index.html"
+pio.write_html(fig, file=output_file, full_html=True,
+               include_plotlyjs="cdn")
+print(f"Website updated: {output_file}")
 
 
 
