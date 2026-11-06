@@ -23,7 +23,7 @@ if not reports:
 
 # Find the newest report based on its filename
 def get_report_date(path):
-    match = re.search(r"\d{4}-\d{2}-\d{2}", path.name)
+    match = re.search(r"\d{4}-\d{2}", path.name)
     if not match:
         raise ValueError(f"Invalid report filename: {path.name}")
     return datetime.strptime(match.group(), "%Y-%m-%d")
